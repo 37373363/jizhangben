@@ -1,0 +1,160 @@
+记账APK - 完整开发指南
+
+项目概述
+
+本项目包含两个版本的记账应用：
+
+1. 桌面版 (account_book.py) - Python Tkinter实现，可直接运行
+2. Android版 (flutter_account/) - Flutter实现，可编译为APK
+
+应用功能
+
+核心功能
+智能关键字识别（自动判断收入/支出）
+记录管理（添加、删除）
+数据持久化存储
+实时统计（总收入、总支出、结余）
+时间戳记录
+
+关键字识别规则
+
+收入关键字（包含以下任一字符自动识别为收入）：
+- 收入、工资、奖金、兼职、理财、股票、基金、利息、红包、转账、进账、赚、得、收
+
+支出关键字（包含以下任一字符自动识别为支出）：
+- 支出、消费、购买、吃饭、午餐、晚餐、早餐、交通、公交、地铁、打车、购物、买、花、付、交、房租、水电、话费、网费、娱乐、游戏、电影、旅游、衣服、鞋子、日用品
+
+使用方法
+
+方案1：桌面版（推荐立即使用）
+
+运行步骤：
+bash
+python account_book.py
+
+特点：
+- 无需额外安装
+- 立即可用
+- 数据保存在 account_records.json
+- 支持导出为TXT文件
+
+方案2：Android APK版
+
+前置要求
+
+1. 安装 Flutter SDK
+
+永久添加（需要管理员权限）
+
+2. 安装 Android Studio
+
+3. 配置环境变量
+
+4. 验证安装
+   flutter doctor
+   
+   确保所有项目都显示 ✓
+
+编译步骤
+
+1. 进入项目目录
+bash
+   cd flutter_account
+
+
+2. 获取依赖
+   flutter pub get
+
+
+3. 修改 local.properties（重要！）
+   
+   编辑 `android/local.properties` 文件，修改为你的实际路径：
+properties
+   sdk.dir=C:\\Users\\你的用户名\\AppData\\Local\\Android\\Sdk
+   flutter.sdk=C:\\flutter
+
+
+4. 编译 APK
+   
+   Debug 版本（快速编译，用于测试）：
+bash
+   flutter build apk --debug
+
+   Release 版本（优化后，用于发布）：
+bash
+   flutter build apk --release
+
+5. 查找 APK 文件
+   
+   编译完成后，APK 文件位于：
+   - Debug: `flutter_account\build\app\outputs\flutter-apk\app-debug.apk`
+   - Release: `flutter_account\build\app\outputs\flutter-apk\app-release.apk`
+
+安装 APK 到手机
+
+项目文件结构
+
+ceshi2/
+├── account_book.py              # 桌面版应用
+├── main.py                      # Kivy版本（需要Python 3.12及以下）
+├── requirements.txt             # Python依赖
+├── account_records.json         # 桌面版数据文件
+└── flutter_account/             # Flutter项目
+    ├── pubspec.yaml             # Flutter依赖配置
+    ├── lib/
+    │   └── main.dart            # Flutter主代码
+    ├── android/
+    │   ├── app/
+    │   │   ├── build.gradle     # 应用级构建配置
+    │   │   └── src/main/
+    │   │       ├── AndroidManifest.xml
+    │   │       └── kotlin/.../MainActivity.kt
+    │   ├── build.gradle         # 项目级构建配置
+    │   ├── gradle.properties
+    │   ├── local.properties     # 需要修改的配置文件
+    │   └── settings.gradle
+    └── README.md                # Flutter编译说明
+
+
+常见问题
+
+Q1: Flutter 命令找不到？
+A:确保已将 Flutter SDK 的 bin 目录添加到系统 PATH 环境变量中。
+
+Q2: 编译时提示 Android SDK 未找到？
+A: 检查 `android/local.properties` 文件中的 `sdk.dir` 路径是否正确。
+
+Q3: 编译失败，提示 Gradle 错误？
+A:
+1. 确保网络连接正常（首次编译需要下载依赖）
+2. 尝试使用国内镜像源：
+bash
+   # 编辑 android/build.gradle
+   # 将 google() 和 mavenCentral() 改为：
+   maven { url 'https://maven.aliyun.com/repository/google' }
+   maven { url 'https://maven.aliyun.com/repository/public' }
+
+
+Q4: 桌面版无法运行？
+A: 确保已安装 Python 3.x，Tkinter 通常随 Python 一起安装。
+
+Q5: 如何添加自定义关键字？
+A: 编辑代码中的 `incomeKeywords` 和 `expenseKeywords` 列表。
+
+技术栈
+
+桌面版
+- Python 3.x
+- Tkinter（内置GUI库）
+- JSON（数据存储）
+
+Android版
+- Flutter 3.x
+- Dart
+- SharedPreferences（数据存储）
+- Material Design 3
+
+许可证
+
+本项目仅供学习和个人使用。
+
